@@ -16,7 +16,7 @@ public class RunHoursProgram extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Monthly Hours (\u00a9 Hadar Hillel)");
 		HoursView view = new HoursView();
-		primaryStage.setScene(new Scene(view, 580, 300));
+		primaryStage.setScene(new Scene(view, 650, 300));
 
 		HoursController controller = new HoursController(view, new HoursModel());
 		view.setViewHandler(controller);

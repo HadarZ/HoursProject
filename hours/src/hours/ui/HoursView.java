@@ -8,19 +8,21 @@ import java.util.Map;
 import hours.controller.ButtonType;
 import hours.controller.HoursViewHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 public class HoursView extends FlowPane {
 
 	private HBox buttonsPane = new HBox();
-	private VBox statusPane = new VBox();
+	private TilePane statusPane = new TilePane(Orientation.VERTICAL);
 	private HoursViewHandler viewHandler;
 	private DaysSelectorPane daysSelectorPane;
 	private StackPane bottomPane = new StackPane();
@@ -32,19 +34,20 @@ public class HoursView extends FlowPane {
 	}
 
 	private void initPanes() {
+		setStyle("-fx-font-family: Tahoma; -fx-font-size: 14px;");
+
 		buttonsPane.setPadding(new Insets(30));
 		buttonsPane.setSpacing(20);
 		buttonsPane.setStyle("-fx-background-color: #336699;");
-		buttonsPane.setPrefHeight(100);
-		// buttonsPane.setPrefWidth(Integer.MAX_VALUE);
+		buttonsPane.setPrefHeight(110);
 
-		statusPane.setPrefHeight(200);
-		// statusPane.setPrefWidth(Integer.MAX_VALUE);
+		statusPane.setMaxHeight(180);
 		statusPane.setPadding(new Insets(30));
+		statusPane.setVgap(10);
+		statusPane.setHgap(70);
 
 		bottomPane.getChildren().add(statusPane);
 		bottomPane.setPrefHeight(200);
-		// bottomPane.setPrefWidth(Integer.MAX_VALUE);
 
 		getChildren().addAll(buttonsPane, bottomPane);
 	}
@@ -62,8 +65,9 @@ public class HoursView extends FlowPane {
 		statusPane.getChildren().clear();
 		for (String string : lines) {
 			Text text = new Text(string);
+			// text.setFont(new Font(14));
 			statusPane.getChildren().add(text);
-			VBox.setMargin(text, new Insets(0, 0, 10, 0));
+			TilePane.setAlignment(text, Pos.BASELINE_LEFT);
 		}
 	}
 

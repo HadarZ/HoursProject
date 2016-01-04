@@ -13,8 +13,4 @@ public enum ButtonType {
 	public String getText() {
 		return text;
 	}
-
-	public String asText() {
-		return text;
-	}
 }

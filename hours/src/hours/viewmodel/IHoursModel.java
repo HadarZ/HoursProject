@@ -6,9 +6,9 @@ public interface IHoursModel {
 
 	void startWork();
 
-	String getFullFilePath();
-
 	void endWork();
+
+	String getFullFilePath();
 
 	HoursResult query();
 

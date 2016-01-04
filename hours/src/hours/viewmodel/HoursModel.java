@@ -52,10 +52,7 @@ public class HoursModel implements IHoursModel {
 
 		Time time = new Time(0, 0);
 		for (DayData dayData : monthData) {
-			List<Time> times = dayData.getDayTimes();
-			for (int i = 0; i < times.size() && i + 1 < times.size(); i += 2) {
-				time.addTimeDiff(times.get(i), times.get(i + 1));
-			}
+			calculateTimeForDay(time, dayData);
 		}
 
 		/*-		Time time2 = new Time(0, 0);
@@ -73,6 +70,13 @@ public class HoursModel implements IHoursModel {
 		return new HoursResult(totalRequiredHours, currentReqiuredHours, time);
 	}
 
+	private void calculateTimeForDay(Time time, DayData dayData) {
+		List<Time> times = dayData.getDayTimes();
+		for (int i = 0; i < times.size() && i + 1 < times.size(); i += 2) {
+			time.addTimeDiff(times.get(i), times.get(i + 1));
+		}
+	}
+
 	private int getRequiredHoursInMonth() {
 		return getWorkHoursInPeriod(monthData.getStartDate(), monthData.getEndDate());
 	}
@@ -82,7 +86,10 @@ public class HoursModel implements IHoursModel {
 		if (today.equals(monthData.getStartDate())) {
 			return 0;
 		}
-		return getWorkHoursInPeriod(monthData.getStartDate(), today.minusDays(1));
+		if (!monthData.hasWorkedToday()) {
+			today = today.minusDays(1);
+		}
+		return getWorkHoursInPeriod(monthData.getStartDate(), today);
 	}
 
 	private int getWorkHoursInPeriod(LocalDate start, LocalDate end) {

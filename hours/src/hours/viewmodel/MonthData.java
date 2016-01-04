@@ -33,14 +33,14 @@ public class MonthData implements Iterable<DayData> {
 	}
 
 	public void addTimeStamp(Time time) {
-		getCurrentDayData().addTime(time);
+		getOrCreateCurrentDayData().addTime(time);
 		setDayAs(LocalDate.now(), DayType.Work);
 
 		dataFileHandler.flush();
 	}
 
-	private DayData getCurrentDayData() {
-		return getDayDataFor(LocalDate.now());
+	private DayData getOrCreateCurrentDayData() {
+		return getOrCreateDayDataFor(LocalDate.now());
 	}
 
 	public String getFileName() {
@@ -63,10 +63,10 @@ public class MonthData implements Iterable<DayData> {
 	}
 
 	public void setDayAs(LocalDate date, DayType type) {
-		getDayDataFor(date).setDayType(type);
+		getOrCreateDayDataFor(date).setDayType(type);
 	}
 
-	private DayData getDayDataFor(LocalDate date) {
+	private DayData getOrCreateDayDataFor(LocalDate date) {
 		DayData dayData = daysData.get(date);
 		if (dayData == null) {
 			dayData = new DayData(date);
@@ -98,7 +98,7 @@ public class MonthData implements Iterable<DayData> {
 	}
 
 	public DayType getDayType(LocalDate current) {
-		return getDayDataFor(current).getDayType();
+		return getOrCreateDayDataFor(current).getDayType();
 	}
 
 	public int getNumberOfNonWorkDays(LocalDate dateLimit) {
@@ -116,5 +116,13 @@ public class MonthData implements Iterable<DayData> {
 			current = current.plusDays(1);
 		}
 		dataFileHandler.flush();
+	}
+
+	public boolean hasWorkedToday() {
+		DayData todayData = daysData.get(LocalDate.now());
+		if (todayData == null) {
+			return false;
+		}
+		return !todayData.isEmpty();
 	}
 }

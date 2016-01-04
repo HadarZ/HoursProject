@@ -46,4 +46,8 @@ public class DayData {
 	public LocalDate getDate() {
 		return date;
 	}
+
+	public boolean isEmpty() {
+		return dayTimes.size() < 2;
+	}
 }
